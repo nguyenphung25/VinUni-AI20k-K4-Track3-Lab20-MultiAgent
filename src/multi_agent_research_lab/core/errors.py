@@ -1,12 +1,8 @@
-"""Domain-specific errors for the lab skeleton."""
+"""Domain-specific errors for the research workflow."""
 
 
 class LabError(Exception):
     """Base error for the lab package."""
-
-
-class StudentTodoError(LabError):
-    """Raised where learners are expected to implement core logic."""
 
 
 class AgentExecutionError(LabError):

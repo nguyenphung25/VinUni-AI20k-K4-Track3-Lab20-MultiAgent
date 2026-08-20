@@ -43,4 +43,20 @@ def render_markdown_report(metrics: list[BenchmarkMetrics]) -> str:
             "and errors), not an LLM-as-judge score. Use the peer-review rubric for final grading.",
         ]
     )
+    failed_runs = [item.run_name for item in metrics if (item.failure_rate or 0) > 0]
+    lines.extend(["", "## Failure mode and remediation", ""])
+    if failed_runs:
+        lines.append(
+            f"Failures were observed in: {', '.join(failed_runs)}. Provider-side 5xx, "
+            "rate-limit, or connection errors can interrupt an LLM call. The client uses bounded "
+            "exponential-backoff retries for transient failures; worker agents fall back to "
+            "evidence-preserving deterministic output so the multi-agent workflow can degrade "
+            "gracefully instead of looping indefinitely."
+        )
+    else:
+        lines.append(
+            "No run failed in this sample. The principal residual risk is a transient provider "
+            "or search outage; bounded retries, timeouts, max iterations, and deterministic "
+            "worker fallbacks prevent an unbounded or silent failure."
+        )
     return "\n".join(lines) + "\n"

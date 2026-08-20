@@ -2,7 +2,7 @@
 
 Starter repo cho bài lab **Multi-Agent Systems**: xây dựng hệ thống nghiên cứu gồm **Supervisor + Researcher + Analyst + Writer** và benchmark với single-agent baseline.
 
-> Mục tiêu của repo này là cung cấp **production-grade skeleton** để học viên phát triển code cá nhân. Các phần logic quan trọng được để ở dạng `TODO` để học viên tự triển khai.
+> Repo đã triển khai đầy đủ workflow nghiên cứu, guardrails, observability và benchmark để làm artefact nộp lab.
 
 ## Learning outcomes
 
@@ -34,16 +34,16 @@ Trace + Benchmark Report
 ```text
 .
 ├── src/multi_agent_research_lab/
-│   ├── agents/              # Agent interfaces + skeletons
+│   ├── agents/              # Agent interfaces + implementations
 │   ├── core/                # Config, state, schemas, errors
-│   ├── graph/               # LangGraph workflow skeleton
+│   ├── graph/               # LangGraph workflow
 │   ├── services/            # LLM, search, storage clients
-│   ├── evaluation/          # Benchmark/evaluation skeleton
+│   ├── evaluation/          # Benchmark/evaluation
 │   ├── observability/       # Logging/tracing hooks
 │   └── cli.py               # CLI entrypoint
 ├── configs/                 # YAML configs for lab variants
 ├── docs/                    # Lab guide, rubric, design notes
-├── tests/                   # Unit tests for skeleton behavior
+├── tests/                   # Unit and workflow tests
 ├── notebooks/               # Optional notebook entrypoint
 ├── scripts/                 # Helper scripts
 ├── .env.example             # Environment variables template
@@ -118,7 +118,7 @@ quality, citation coverage và failure rate.
 
 | Thời lượng | Milestone | File gợi ý |
 |---:|---|---|
-| 0-15' | Setup, chạy baseline skeleton | `cli.py`, `services/llm_client.py` |
+| 0-15' | Setup, chạy baseline | `cli.py`, `services/llm_client.py` |
 | 15-45' | Build Supervisor / router | `agents/supervisor.py`, `graph/workflow.py` |
 | 45-75' | Thêm Researcher, Analyst, Writer | `agents/*.py`, `core/state.py` |
 | 75-95' | Trace + benchmark single vs multi | `observability/tracing.py`, `evaluation/benchmark.py` |
@@ -135,23 +135,11 @@ quality, citation coverage và failure rate.
 - Không để agent chạy vô hạn: dùng `max_iterations`, `timeout_seconds`.
 - Có benchmark report thay vì chỉ demo output đẹp.
 
-## TODO chính cho học viên
+## Trạng thái triển khai
 
-Tìm trong code các marker:
-
-```bash
-grep -R "TODO(student)" -n src tests docs
-```
-
-Các phần học viên cần tự làm:
-
-1. Implement LLM client.
-2. Implement web/search client hoặc mock search source.
-3. Implement routing decision trong Supervisor.
-4. Implement từng worker agent.
-5. Build LangGraph workflow.
-6. Thêm tracing provider thật: LangSmith, Langfuse hoặc OpenTelemetry.
-7. Viết benchmark report.
+Các milestone chính đã hoàn thành: LLM và Tavily client, Supervisor routing, ba worker agent,
+LangGraph workflow, Langfuse tracing, guardrails và benchmark single-agent vs multi-agent.
+Kết quả benchmark và failure analysis nằm trong `reports/benchmark_report.md`.
 
 ## Deliverables
 

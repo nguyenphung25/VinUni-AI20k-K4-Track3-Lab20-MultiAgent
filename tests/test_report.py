@@ -7,3 +7,4 @@ def test_report_renders_markdown() -> None:
     assert "Benchmark Report" in report
     assert "baseline" in report
     assert "Aggregate summary" in report
+    assert "Failure mode and remediation" in report

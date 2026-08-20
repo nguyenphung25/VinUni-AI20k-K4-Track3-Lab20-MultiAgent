@@ -22,7 +22,7 @@ File gợi ý:
 - `src/multi_agent_research_lab/cli.py`
 - `src/multi_agent_research_lab/services/llm_client.py`
 
-TODO(student): thay baseline placeholder bằng một call LLM thật.
+Đã hoàn thành: baseline gọi LLM thật qua `LLMClient`, ghi token, cost và Langfuse generation.
 
 ## Milestone 2: Supervisor
 
@@ -31,7 +31,7 @@ File gợi ý:
 - `src/multi_agent_research_lab/agents/supervisor.py`
 - `src/multi_agent_research_lab/graph/workflow.py`
 
-TODO(student): implement routing policy.
+Đã hoàn thành: Supervisor dùng routing theo prerequisite và dừng bằng guardrail.
 
 Gợi ý câu hỏi thiết kế:
 
@@ -49,7 +49,7 @@ File gợi ý:
 - `src/multi_agent_research_lab/agents/analyst.py`
 - `src/multi_agent_research_lab/agents/writer.py`
 
-TODO(student): implement từng worker.
+Đã hoàn thành: Researcher, Analyst và Writer có output riêng, trace và fallback khi provider lỗi.
 
 ## Milestone 4: Trace và benchmark
 
@@ -111,7 +111,13 @@ Cách khắc phục (chọn 1 trong 3):
 
 ## Exit ticket
 
-Mỗi nhóm trả lời 2 câu:
-
-1. Case nào nên dùng multi-agent? Vì sao?
-2. Case nào không nên dùng multi-agent? Vì sao?
+1. **Khi nào nên dùng multi-agent?** Khi bài toán có thể tách thành các giai đoạn hoặc chuyên
+   môn độc lập, ví dụ tìm nguồn, phân tích bằng chứng và viết báo cáo. Việc phân vai giúp kiểm
+   thử từng bước, quan sát handoff, dùng model/tool phù hợp cho từng nhiệm vụ và cho phép
+   fallback cục bộ khi một agent gặp lỗi. Cách này phù hợp với tác vụ nghiên cứu phức tạp, dài
+   và cần nhiều nguồn.
+2. **Khi nào không nên dùng multi-agent?** Khi tác vụ ngắn, tuần tự, có một mục tiêu rõ ràng
+   hoặc yêu cầu giữ state liên tục. Trong các trường hợp đó, một agent thường nhanh, rẻ và dễ
+   debug hơn; thêm nhiều agent chỉ làm tăng token, latency và rủi ro mất ngữ cảnh khi handoff.
+   Nên bắt đầu bằng single-agent và chỉ chuyển sang multi-agent khi benchmark cho thấy lợi ích
+   chất lượng lớn hơn chi phí điều phối.

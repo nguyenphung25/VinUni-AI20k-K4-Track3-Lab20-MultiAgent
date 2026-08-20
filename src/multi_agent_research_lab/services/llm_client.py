@@ -3,7 +3,7 @@
 import time
 from dataclasses import dataclass
 
-from openai import APIConnectionError, APIError, OpenAI, RateLimitError
+from openai import APIConnectionError, APIError, APIStatusError, OpenAI, RateLimitError
 from openai.types.chat import ChatCompletionMessageParam
 
 from multi_agent_research_lab.core.config import get_settings
@@ -131,6 +131,15 @@ class LLMClient:
                         raise AgentExecutionError(f"LLM daily quota exhausted: {exc}") from exc
                     time.sleep(2 ** (attempt - 1))
                     continue
+
+                except APIStatusError as exc:
+                    if generation is not None:
+                        generation.update(level="ERROR", status_message=type(exc).__name__)
+                    if exc.status_code >= 500 and attempt < self._max_retries:
+                        last_error = exc
+                        time.sleep(2 ** (attempt - 1))
+                        continue
+                    raise AgentExecutionError(f"LLM API error: {exc}") from exc
 
                 except APIError as exc:
                     if generation is not None:
