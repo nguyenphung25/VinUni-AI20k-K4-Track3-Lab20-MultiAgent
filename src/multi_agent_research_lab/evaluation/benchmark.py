@@ -5,6 +5,7 @@ from time import perf_counter
 
 from multi_agent_research_lab.core.schemas import BenchmarkMetrics, ResearchQuery
 from multi_agent_research_lab.core.state import ResearchState
+from multi_agent_research_lab.evaluation.quality import evaluate_quality
 from multi_agent_research_lab.graph.workflow import MultiAgentWorkflow
 from multi_agent_research_lab.services.llm_client import LLMClient
 
@@ -54,46 +55,21 @@ def run_benchmark(
 
     # Calculate total cost from trace
     total_cost = sum(e.get("payload", {}).get("cost_usd", 0) or 0 for e in state.trace)
+    quality = evaluate_quality(state)
 
     metrics = BenchmarkMetrics(
         run_name=run_name,
+        query=query,
         latency_seconds=latency,
         estimated_cost_usd=total_cost or None,
-        quality_score=_calc_quality_score(state),
-        citation_coverage=_calc_citation_coverage(state),
+        quality_score=quality.structural_quality,
+        citation_coverage=quality.citation_coverage,
         failure_rate=0.0 if state.final_answer else 1.0,
         notes=f"Routes: {state.route_history}"
+        + (f"; Errors: {state.errors}" if state.errors else "")
         + (f"; Trace: {state.trace_url}" if state.trace_url else ""),
     )
     return state, metrics
-
-
-def _calc_citation_coverage(state: ResearchState) -> float:
-    """Ratio of claims with sources / total claims."""
-    if not state.final_answer:
-        return 0.0
-    source_urls = {source.url for source in state.sources if source.url}
-    if not source_urls:
-        return 0.0
-    cited_urls = sum(url in state.final_answer for url in source_urls)
-    return cited_urls / len(source_urls)
-
-
-def _calc_quality_score(state: ResearchState) -> float:
-    """Transparent structural proxy; human review should replace it for final grading."""
-    score = 0.0
-    if state.final_answer:
-        score += 4.0
-        score += min(len(state.final_answer.split()) / 250, 1.0)
-    if state.sources:
-        score += 1.5
-    if state.research_notes:
-        score += 1.0
-    if state.analysis_notes:
-        score += 1.5
-    if not state.errors:
-        score += 1.0
-    return min(round(score, 2), 10.0)
 
 
 def run_full_benchmark(queries: list[str]) -> list[BenchmarkMetrics]:

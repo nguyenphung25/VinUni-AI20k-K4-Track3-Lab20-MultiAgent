@@ -120,6 +120,8 @@ def benchmark() -> None:
         "Research GraphRAG state-of-the-art and write a 500-word summary",
         "Compare single-agent and multi-agent workflows for customer support",
         "Summarize production guardrails for LLM agents",
+        "Compare RAG evaluation methods for factuality and citation grounding",
+        "Explain when agentic search is worth its latency and cost overhead",
     ]
 
     console.print("[bold]Running benchmark: single-agent vs multi-agent[/bold]")

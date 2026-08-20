@@ -42,7 +42,7 @@ class WriterAgent(BaseAgent):
         try:
             resp = self._llm.complete(system_prompt, user_prompt, observation_name="write-report")
             state.final_answer = resp.content
-            state.agent_results.append(AgentResult(agent=AgentName.WRITER, content=resp.content))
+            result_metadata: dict[str, bool] = {}
             usage = {
                 "input_tokens": resp.input_tokens,
                 "output_tokens": resp.output_tokens,
@@ -57,17 +57,35 @@ class WriterAgent(BaseAgent):
                 "_Generated with the deterministic fallback because the configured "
                 "language model was unavailable._"
             )
-            state.agent_results.append(
-                AgentResult(
-                    agent=AgentName.WRITER,
-                    content=state.final_answer,
-                    metadata={"fallback": True},
-                )
-            )
+            result_metadata = {"fallback": True}
             usage = {"fallback": True}
 
+        missing_sources = [
+            source
+            for source in state.sources
+            if source.url and source.url not in (state.final_answer or "")
+        ]
+        if missing_sources:
+            source_appendix = "\n".join(
+                f"- [{source.title}]({source.url})" for source in missing_sources
+            )
+            state.final_answer = (
+                f"{state.final_answer or ''}\n\n## Sources\n{source_appendix}"
+            ).strip()
+
+        state.agent_results.append(
+            AgentResult(
+                agent=AgentName.WRITER,
+                content=state.final_answer or "",
+                metadata=result_metadata,
+            )
+        )
         state.add_trace_event(
             "writer",
-            {"answer_length": len(state.final_answer or ""), **usage},
+            {
+                "answer_length": len(state.final_answer or ""),
+                "citation_repair_count": len(missing_sources),
+                **usage,
+            },
         )
         return state

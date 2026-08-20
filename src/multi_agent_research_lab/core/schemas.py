@@ -35,6 +35,7 @@ class SourceDocument(BaseModel):
 
 class BenchmarkMetrics(BaseModel):
     run_name: str
+    query: str | None = None
     latency_seconds: float
     estimated_cost_usd: float | None = None
     quality_score: float | None = Field(default=None, ge=0, le=10)

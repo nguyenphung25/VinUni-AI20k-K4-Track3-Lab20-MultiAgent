@@ -123,6 +123,26 @@ def current_trace_url() -> str | None:
     return client.get_trace_url() if client is not None else None
 
 
+def score_current_trace(
+    *, name: str, value: float, data_type: Literal["NUMERIC", "BOOLEAN"], comment: str
+) -> None:
+    """Attach one deterministic evaluation score to the active Langfuse trace."""
+    client = _get_langfuse_client()
+    if client is None:
+        return
+    trace_id = client.get_current_trace_id()
+    if trace_id is None:
+        return
+    client.score_current_trace(
+        name=name,
+        value=value,
+        score_id=f"{trace_id}-{name}",
+        data_type=data_type,
+        comment=comment,
+        metadata={"evaluator": "deterministic-rubric-v1"},
+    )
+
+
 def flush_remote_tracing() -> None:
     """Flush queued events in short-lived CLI processes."""
     client = _get_langfuse_client()

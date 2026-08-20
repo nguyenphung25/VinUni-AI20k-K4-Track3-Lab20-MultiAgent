@@ -13,11 +13,13 @@ from multi_agent_research_lab.agents.supervisor import SupervisorAgent
 from multi_agent_research_lab.agents.writer import WriterAgent
 from multi_agent_research_lab.core.config import get_settings
 from multi_agent_research_lab.core.state import ResearchState
+from multi_agent_research_lab.evaluation.quality import evaluate_quality
 from multi_agent_research_lab.observability.tracing import (
     current_trace_url,
     flush_remote_tracing,
     remote_observation,
     remote_trace_attributes,
+    score_current_trace,
 )
 
 
@@ -168,6 +170,7 @@ class MultiAgentWorkflow:
                 else:
                     raise ValueError(f"Unexpected graph result type: {type(result)}")
                 if root_observation is not None:
+                    quality = evaluate_quality(final_state)
                     root_observation.update(
                         output={
                             "answer": final_state.final_answer,
@@ -175,6 +178,27 @@ class MultiAgentWorkflow:
                             "source_count": len(final_state.sources),
                             "error_count": len(final_state.errors),
                         }
+                    )
+                    score_current_trace(
+                        name="structural-quality",
+                        value=quality.structural_quality,
+                        data_type="NUMERIC",
+                        comment=(
+                            "Deterministic 0-10 output rubric: answer, depth, source evidence, "
+                            "citation coverage, and error-free completion."
+                        ),
+                    )
+                    score_current_trace(
+                        name="citation-coverage",
+                        value=quality.citation_coverage,
+                        data_type="NUMERIC",
+                        comment="Fraction of retrieved source URLs cited in the final answer.",
+                    )
+                    score_current_trace(
+                        name="run-success",
+                        value=float(quality.run_success),
+                        data_type="BOOLEAN",
+                        comment="True when the workflow produced a non-empty final answer.",
                     )
                     final_state.trace_url = current_trace_url()
                 return final_state
