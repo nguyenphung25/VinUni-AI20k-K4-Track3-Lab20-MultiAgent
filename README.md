@@ -68,10 +68,15 @@ cp .env.example .env
 Mở `.env` và điền key cần thiết.
 
 ```bash
-OPENAI_API_KEY=...
-# optional
-LANGSMITH_API_KEY=...
+LLM_PROVIDER=gemini
+GEMINI_API_KEY=...
+GEMINI_MODEL=gemini-3.1-flash-lite
 TAVILY_API_KEY=...
+
+# Optional remote tracing
+LANGFUSE_PUBLIC_KEY=pk-lf-...
+LANGFUSE_SECRET_KEY=sk-lf-...
+LANGFUSE_BASE_URL=https://cloud.langfuse.com
 ```
 
 ### 3. Chạy smoke test
@@ -81,23 +86,33 @@ make test
 python -m multi_agent_research_lab.cli --help
 ```
 
-### 4. Chạy baseline skeleton
+### 4. Chạy baseline
 
 ```bash
 python -m multi_agent_research_lab.cli baseline \
   --query "Research GraphRAG state-of-the-art and write a 500-word summary"
 ```
 
-Lệnh này chỉ chạy khung baseline tối giản. Học viên cần tự triển khai logic LLM thực tế trong `src/multi_agent_research_lab/services/llm_client.py`.
+Lệnh này chạy một LLM agent duy nhất để làm mốc so sánh latency, cost và quality.
 
-### 5. Chạy multi-agent skeleton
+### 5. Chạy multi-agent
 
 ```bash
 python -m multi_agent_research_lab.cli multi-agent \
   --query "Research GraphRAG state-of-the-art and write a 500-word summary"
 ```
 
-Mặc định lệnh sẽ báo các `TODO` cần làm. Đây là chủ đích của starter repo.
+Lệnh chạy graph `Supervisor -> Researcher -> Analyst -> Writer`, ghi local JSON trace vào
+`reports/latest_trace.json`, và in URL Langfuse nếu credentials đã được cấu hình.
+
+### 6. Chạy benchmark
+
+```bash
+python -m multi_agent_research_lab.cli benchmark
+```
+
+Kết quả được ghi vào `reports/benchmark_report.md` với latency, token cost, structural
+quality, citation coverage và failure rate.
 
 ## Milestones trong 2 giờ lab
 
