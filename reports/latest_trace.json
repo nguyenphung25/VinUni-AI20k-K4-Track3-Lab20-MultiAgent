@@ -1,0 +1,189 @@
+{
+  "request": {
+    "query": "Explain when a multi-agent research workflow is preferable to a single agent",
+    "max_sources": 5,
+    "audience": "technical learners"
+  },
+  "iteration": 4,
+  "route_history": [
+    "researcher",
+    "analyst",
+    "writer",
+    "done"
+  ],
+  "sources": [
+    {
+      "title": "Single-Agent vs Multi-Agent AI: When to Scale Your Dev Workflow",
+      "url": "https://www.augmentcode.com/guides/single-agent-vs-multi-agent-ai",
+      "snippet": "Software development work often includes substantial time on design, testing, debugging, and coordination beyond the coding itself. Well-defined, sequential coding tasks favor single-agent workflows because the state must stay coherent across steps. Breadth-first or parallelizable research favors multi-agent systems because information gathering across independent sources does not require shared state management.\n\n## Scenario-by-Scenario Verdicts [...] Different development scenarios reward different architectures. The pattern stays consistent across debugging, refactoring, research, and review: single-agent workflows win when state must stay coherent across steps, while multi-agent workflows win when subtasks can run independently.\n\n### Single-File Edits and Debugging: Single-Agent Wins [...] Breadth-first research represents the strongest case for multi-agent architecture because of a fundamental structure match: research questions decompose into independent sub-questions that do not modify shared state. Each sub-agent can search, read, and synthesize without coordinating with others.\n\nVerdict: Multi-agent wins decisively for breadth-first exploration across independent information sources.\n\n### Standard Code Review: Single-Agent. Cross-Cutting Review: Multi-Agent",
+      "metadata": {}
+    },
+    {
+      "title": "How we built our multi-agent research system",
+      "url": "https://www.anthropic.com/engineering/multi-agent-research-system",
+      "snippet": "Our internal evaluations show that multi-agent research systems excel especially for breadth-first queries that involve pursuing multiple independent directions simultaneously. We found that a multi-agent system with Claude Opus 4 as the lead agent and Claude Sonnet 4 subagents outperformed single-agent Claude Opus 4 by 90.2% on our internal research eval. For example, when asked to identify all the board members of the companies in the Information Technology S&P 500, the multi-agent system [...] multi-agent system found the correct answers by decomposing this into tasks for subagents, while the single agent system failed to find the answer with slow, sequential searches.",
+      "metadata": {}
+    },
+    {
+      "title": "Single-agent vs. multi-agent systems: Enterprise AI tradeoffs",
+      "url": "https://www.dataiku.com/blog/single-agent-vs-multi-agent-systems",
+      "snippet": "Scalability through specialization: Instead of retraining one large model to do everything, you can introduce a specialist agent for a new domain. That modularity makes expansion more manageable and often more cost-efficient over time.\n Improved fault tolerance: A single-agent system has one decision engine. In a multi-agent setup, failure in one component doesn’t necessarily bring the entire workflow down. The system can degrade gracefully while maintaining core operations. [...] Choose a single-agent system when tasks are well-defined and sequential.\n Choose a multi-agent system when tasks require parallel processing or domain expertise.\n Consider hybrid models with a central orchestrator and specialist agents.\n Evaluate governance readiness before committing to distributed architectures. [...] The single vs. multi-agent system choice shapes whether your AI investments deliver production value or remain stuck in pilots. Multi-agent architectures outperform single agents on complex tasks but demand governance infrastructure. Multi-agent systems require centralized oversight and audit trails built into the development workflow. Capabilities within Dataiku, including Agent Hub for orchestration and Dataiku Govern for lifecycle management, address these requirements directly. Start with",
+      "metadata": {}
+    },
+    {
+      "title": "Choosing the Right Multi-Agent Architecture",
+      "url": "https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture",
+      "snippet": "Recent research demonstrates how multi-agent systems perform better in these situations. In Anthropic's multi-agent research system, a multi-agent architecture with Claude Opus 4 as the lead agent and Claude Sonnet 4 subagents outperformed single-agent Claude Opus 4 by 90.2% on internal research evaluations. The architecture's ability to distribute work across agents with separate context windows enabled parallel reasoning that a single agent couldn't achieve.\n\n## Multi-Agent Architectures [...] By Sydney Runkle\n\nMany agentic tasks are best handled by a single agent with well-designed tools. You should start here—single agents are simpler to build, reason about, and debug. But as applications scale, teams face a common challenge wherein they have sprawling agent capabilities they want to combine into a single coherent interface. As the features they want to combine grow in number, two main constraints emerge: [...] Best for: Single agents with many possible specializations, situations where you don't need to enforce constraints between capabilities, or team distribution where different teams maintain different skills. Common examples include coding agents or creative assistants.\n\nKey tradeoff: Context accumulates in conversation history as skills are loaded, which can lead to token bloat on subsequent calls. However, the pattern provides simplicity and direct user interaction throughout.",
+      "metadata": {}
+    },
+    {
+      "title": "Rethinking the Value of Multi-Agent Workflow: A Strong Single Agent Baseline",
+      "url": "https://arxiv.org/html/2601.12307v1",
+      "snippet": "their multi-agent counterparts, consistent with the hypothesis in Section 3.1: in homogeneous settings, a single model can faithfully simulate agent roles via multi-turn conversations. Our proposed OneFlow, typically when using the single-agent execution setting, shows superior performance compared to all the homogeneous workflow baselines. [...] workflows for single-agent execution, reducing inference costs compared to existing automatic multi-agent design frameworks without trading off accuracy. These results position the single-LLM implementation of multi-agent workflows as a strong baseline for MAS research. We also note that single-LLM methods cannot capture heterogeneous workflows due to the lack of KV cache sharing across different LLMs, highlighting future opportunities in developing truly heterogeneous multi-agent systems. [...] We formalize when a single agent can implement a homogeneous multi-agent workflow without loss of expressivity. Recall the formalization in the Preliminary section: a workflow WW is a directed graph G=(N,E)G=(N,E) with agents ni=(bi,pi,τi)n\\_{i}=(b\\_{i},p\\_{i},\\tau\\_{i}) and routing logic on edges. Let WW be homogeneous with |ℬ⁡(W)|=1|\\mathcal{B}(W)|=1 and base LLM bb. Executing WW on input xx produces a transcript",
+      "metadata": {}
+    }
+  ],
+  "research_notes": "### Research Notes: Multi-Agent vs. Single-Agent Workflows\n\n#### **When to Prefer Multi-Agent Workflows**\nMulti-agent systems are superior when tasks require parallel processing, domain-specific expertise, or breadth-first exploration.\n*   **Breadth-First Research:** Multi-agent systems excel at decomposing complex queries into independent sub-tasks that can be executed simultaneously. This avoids the limitations of slow, sequential searching inherent in single-agent models (*Single-Agent vs Multi-Agent AI: When to Scale Your Dev Workflow*; *How we built our multi-agent research system*).\n*   **Parallelization and Scalability:** By distributing work across agents with separate context windows, systems can achieve parallel reasoning that a single agent cannot match (*Choosing the Right Multi-Agent Architecture*).\n*   **Specialization and Modularity:** Multi-agent architectures allow for the integration of specialist agents for specific domains, which is more cost-efficient and manageable than retraining a single large model for every task (*Single-agent vs. multi-agent systems: Enterprise AI tradeoffs*).\n*   **Fault Tolerance:** A multi-agent setup prevents a single component failure from crashing the entire workflow, allowing the system to degrade gracefully (*Single-agent vs. multi-agent systems: Enterprise AI tradeoffs*).\n\n#### **When to Prefer Single-Agent Workflows**\nSingle-agent workflows are recommended for tasks that are well-defined, sequential, or require strict state management.\n*   **Coherent State Management:** When a task requires maintaining a consistent state across multiple steps (e.g., single-file coding edits or debugging), a single agent is more effective because it avoids the complexity of coordinating state across multiple entities (*Single-Agent vs Multi-Agent AI: When to Scale Your Dev Workflow*).\n*   **Simplicity and Debugging:** Single agents are easier to build, reason about, and debug. They serve as a strong baseline for most applications before scaling to more complex architectures (*Choosing the Right Multi-Agent Architecture*).\n*   **Efficiency in Homogeneous Tasks:** Research suggests that in homogeneous settings, a single model can effectively simulate multiple agent roles through multi-turn conversations, often reducing inference costs without sacrificing accuracy (*Rethinking the Value of Multi-Agent Workflow: A Strong Single Agent Baseline*).\n\n#### **Key Tradeoffs and Considerations**\n*   **Performance Gains:** In specific research evaluations, multi-agent systems (e.g., a lead agent with specialized sub-agents) have demonstrated significant performance improvements—up to 90.2%—over single-agent counterparts (*How we built our multi-agent research system*; *Choosing the Right Multi-Agent Architecture*).\n*   **Governance and Infrastructure:** Multi-agent systems require more robust governance, centralized oversight, and audit trails to be effective in production environments (*Single-agent vs. multi-agent systems: Enterprise AI tradeoffs*).\n*   **Context Management:** While single agents provide simplicity, they may suffer from \"token bloat\" as conversation history accumulates when loading many skills into a single context window (*Choosing the Right Multi-Agent Architecture*).",
+  "analysis_notes": "As a research analyst, I have synthesized the provided notes into the following structured insights regarding the selection of multi-agent versus single-agent workflows.\n\n### 1. Key Claims\n| Claim | Evidence Strength |\n| :--- | :--- |\n| **Multi-agent systems improve performance** on complex tasks (up to 90.2% gain) by leveraging specialized sub-agents. | **Strong** |\n| **Multi-agent systems offer superior scalability** through parallel processing and independent context windows. | **Strong** |\n| **Single-agent systems are more efficient** for sequential, state-dependent tasks due to reduced coordination overhead. | **Strong** |\n| **Multi-agent systems provide better fault tolerance** by isolating components, preventing total system failure. | **Medium** |\n| **Single-agent systems are easier to debug** and serve as a necessary baseline before scaling to multi-agent architectures. | **Medium** |\n\n### 2. Competing Viewpoints\n*   **Specialization vs. Simulation:** Proponents of multi-agent systems argue that distinct, specialized agents are necessary for domain expertise. Conversely, some research suggests that a single, high-capability model can simulate multiple roles through multi-turn prompting, potentially achieving similar results with lower infrastructure complexity.\n*   **Complexity vs. Control:** Multi-agent architectures are favored for their modularity and ability to handle breadth-first research, but this is countered by the argument that the governance, audit, and coordination overhead required for these systems may outweigh the benefits for simpler, homogeneous tasks.\n\n### 3. Gaps or Weak Evidence\n*   **Cost-Benefit Thresholds:** While the notes mention that multi-agent systems are \"more cost-efficient\" for domain specialization, there is a lack of comparative data on the *operational* costs (e.g., orchestration latency, API overhead, and infrastructure maintenance) versus the *inference* cost savings.\n*   **Context Window Trade-offs:** The notes mention \"token bloat\" in single agents but do not provide empirical data comparing the total token consumption of a multi-agent system (which must pass messages between agents) versus a single agent with a long context window.\n*   **Failure Modes:** While \"fault tolerance\" is claimed as a benefit of multi-agent systems, the notes do not address the specific failure modes of *coordination* (e.g., agent hallucination in hand-offs or circular dependencies), which are unique risks to multi-agent setups.\n\n### 4. Overall Assessment\nThe choice between single and multi-agent workflows is primarily a trade-off between **architectural complexity** and **task decomposition requirements.**\n\n*   **Prefer Multi-Agent when:** The task is inherently parallelizable, requires diverse domain expertise, or is too large to fit within a single agent’s effective context window. It is the superior choice for high-stakes, complex research environments where modularity and fault tolerance are critical.\n*   **Prefer Single-Agent when:** The task is sequential, requires strict state consistency (e.g., coding/debugging), or when the development team is in the early stages of a project. A single-agent baseline is recommended to establish a performance floor before introducing the overhead of multi-agent orchestration.\n\n**Strategic Recommendation:** Organizations should adopt a \"Single-Agent First\" strategy. Only transition to a multi-agent architecture when the single-agent baseline fails to manage context effectively or when the task complexity necessitates distinct, parallelized sub-processes.",
+  "final_answer": "### Choosing Between Single-Agent and Multi-Agent Research Workflows\n\nIn modern AI engineering, the choice between a single-agent and a multi-agent architecture is a fundamental design decision that balances system complexity against task requirements. While multi-agent systems offer significant performance gains for complex, large-scale research, they introduce substantial orchestration overhead.\n\n#### When to Prefer a Multi-Agent Workflow\nMulti-agent systems are designed to handle high-complexity tasks that benefit from modularity and parallelization. You should consider a multi-agent architecture when:\n\n*   **Task Decomposition is Required:** When a research goal can be broken into independent sub-tasks (e.g., one agent searches for data, another synthesizes it, and a third verifies it), multi-agent systems allow for **breadth-first exploration**. This avoids the bottlenecks of sequential processing [1, 2].\n*   **Parallel Processing is Necessary:** Multi-agent systems can execute tasks simultaneously. By distributing work across agents with separate context windows, you can achieve higher throughput and more efficient reasoning than a single agent constrained by a linear workflow [4].\n*   **Domain-Specific Expertise is Needed:** If a project requires deep knowledge in disparate fields, it is often more efficient to deploy specialized agents (e.g., a \"Coder\" agent and a \"Legal\" agent) rather than forcing a single model to maintain broad, shallow expertise [3].\n*   **Fault Tolerance is Critical:** In a multi-agent setup, the failure of one component does not necessarily crash the entire system. This modularity allows for more robust, graceful degradation in production environments [3].\n\n#### When to Prefer a Single-Agent Workflow\nDespite the hype surrounding multi-agent systems, a single-agent baseline is often the most effective starting point. You should prefer a single-agent workflow when:\n\n*   **State Management is Primary:** For tasks requiring strict, sequential state consistency—such as complex code refactoring or debugging—a single agent is superior. It avoids the \"coordination tax\" and potential communication errors that arise when multiple agents must synchronize their state [1].\n*   **Simplicity and Debugging are Priorities:** Single-agent systems are significantly easier to build, monitor, and debug. They provide a clear, predictable performance baseline, which is essential for establishing a \"floor\" before introducing the complexity of multi-agent orchestration [4].\n*   **Tasks are Homogeneous:** Recent research suggests that for many tasks, a single high-capability model can effectively simulate multiple roles through multi-turn prompting. This approach can achieve similar accuracy to multi-agent systems while reducing inference costs and eliminating the need for complex inter-agent communication protocols [5].\n\n#### Summary of Trade-offs\n\n| Feature | Single-Agent | Multi-Agent |\n| :--- | :--- | :--- |\n| **Complexity** | Low; easy to debug | High; requires orchestration |\n| **State Management** | Superior; linear | Complex; requires synchronization |\n| **Scalability** | Limited by context window | High; parallelizable |\n| **Best For** | Sequential, state-heavy tasks | Complex, parallel research |\n\n#### Strategic Recommendation: The \"Single-Agent First\" Approach\nFor most technical teams, the most effective strategy is to **start with a single-agent baseline.** \n\n1.  **Establish a Baseline:** Build a robust single-agent system to solve your core problem.\n2.  **Identify Bottlenecks:** Only transition to a multi-agent architecture if you encounter specific limitations, such as \"token bloat\" (where the context window is overwhelmed by diverse tasks) or if the task complexity demonstrably exceeds the reasoning capabilities of a single model [4].\n3.  **Evaluate Overhead:** Before scaling, consider that multi-agent systems require additional infrastructure for governance, audit trails, and inter-agent communication, which may introduce latency and operational costs that outweigh the performance benefits for simpler workflows [3].\n\n***\n\n**Sources:**\n1. [Single-Agent vs Multi-Agent AI: When to Scale Your Dev Workflow](https://www.augmentcode.com/guides/single-agent-vs-multi-agent-ai)\n2. [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)\n3. [Single-agent vs. multi-agent systems: Enterprise AI tradeoffs](https://www.dataiku.com/blog/single-agent-vs-multi-agent-systems)\n4. [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture)\n5. [Rethinking the Value of Multi-Agent Workflow: A Strong Single Agent Baseline](https://arxiv.org/html/2601.12307v1)",
+  "agent_results": [
+    {
+      "agent": "researcher",
+      "content": "### Research Notes: Multi-Agent vs. Single-Agent Workflows\n\n#### **When to Prefer Multi-Agent Workflows**\nMulti-agent systems are superior when tasks require parallel processing, domain-specific expertise, or breadth-first exploration.\n*   **Breadth-First Research:** Multi-agent systems excel at decomposing complex queries into independent sub-tasks that can be executed simultaneously. This avoids the limitations of slow, sequential searching inherent in single-agent models (*Single-Agent vs Multi-Agent AI: When to Scale Your Dev Workflow*; *How we built our multi-agent research system*).\n*   **Parallelization and Scalability:** By distributing work across agents with separate context windows, systems can achieve parallel reasoning that a single agent cannot match (*Choosing the Right Multi-Agent Architecture*).\n*   **Specialization and Modularity:** Multi-agent architectures allow for the integration of specialist agents for specific domains, which is more cost-efficient and manageable than retraining a single large model for every task (*Single-agent vs. multi-agent systems: Enterprise AI tradeoffs*).\n*   **Fault Tolerance:** A multi-agent setup prevents a single component failure from crashing the entire workflow, allowing the system to degrade gracefully (*Single-agent vs. multi-agent systems: Enterprise AI tradeoffs*).\n\n#### **When to Prefer Single-Agent Workflows**\nSingle-agent workflows are recommended for tasks that are well-defined, sequential, or require strict state management.\n*   **Coherent State Management:** When a task requires maintaining a consistent state across multiple steps (e.g., single-file coding edits or debugging), a single agent is more effective because it avoids the complexity of coordinating state across multiple entities (*Single-Agent vs Multi-Agent AI: When to Scale Your Dev Workflow*).\n*   **Simplicity and Debugging:** Single agents are easier to build, reason about, and debug. They serve as a strong baseline for most applications before scaling to more complex architectures (*Choosing the Right Multi-Agent Architecture*).\n*   **Efficiency in Homogeneous Tasks:** Research suggests that in homogeneous settings, a single model can effectively simulate multiple agent roles through multi-turn conversations, often reducing inference costs without sacrificing accuracy (*Rethinking the Value of Multi-Agent Workflow: A Strong Single Agent Baseline*).\n\n#### **Key Tradeoffs and Considerations**\n*   **Performance Gains:** In specific research evaluations, multi-agent systems (e.g., a lead agent with specialized sub-agents) have demonstrated significant performance improvements—up to 90.2%—over single-agent counterparts (*How we built our multi-agent research system*; *Choosing the Right Multi-Agent Architecture*).\n*   **Governance and Infrastructure:** Multi-agent systems require more robust governance, centralized oversight, and audit trails to be effective in production environments (*Single-agent vs. multi-agent systems: Enterprise AI tradeoffs*).\n*   **Context Management:** While single agents provide simplicity, they may suffer from \"token bloat\" as conversation history accumulates when loading many skills into a single context window (*Choosing the Right Multi-Agent Architecture*).",
+      "metadata": {}
+    },
+    {
+      "agent": "analyst",
+      "content": "As a research analyst, I have synthesized the provided notes into the following structured insights regarding the selection of multi-agent versus single-agent workflows.\n\n### 1. Key Claims\n| Claim | Evidence Strength |\n| :--- | :--- |\n| **Multi-agent systems improve performance** on complex tasks (up to 90.2% gain) by leveraging specialized sub-agents. | **Strong** |\n| **Multi-agent systems offer superior scalability** through parallel processing and independent context windows. | **Strong** |\n| **Single-agent systems are more efficient** for sequential, state-dependent tasks due to reduced coordination overhead. | **Strong** |\n| **Multi-agent systems provide better fault tolerance** by isolating components, preventing total system failure. | **Medium** |\n| **Single-agent systems are easier to debug** and serve as a necessary baseline before scaling to multi-agent architectures. | **Medium** |\n\n### 2. Competing Viewpoints\n*   **Specialization vs. Simulation:** Proponents of multi-agent systems argue that distinct, specialized agents are necessary for domain expertise. Conversely, some research suggests that a single, high-capability model can simulate multiple roles through multi-turn prompting, potentially achieving similar results with lower infrastructure complexity.\n*   **Complexity vs. Control:** Multi-agent architectures are favored for their modularity and ability to handle breadth-first research, but this is countered by the argument that the governance, audit, and coordination overhead required for these systems may outweigh the benefits for simpler, homogeneous tasks.\n\n### 3. Gaps or Weak Evidence\n*   **Cost-Benefit Thresholds:** While the notes mention that multi-agent systems are \"more cost-efficient\" for domain specialization, there is a lack of comparative data on the *operational* costs (e.g., orchestration latency, API overhead, and infrastructure maintenance) versus the *inference* cost savings.\n*   **Context Window Trade-offs:** The notes mention \"token bloat\" in single agents but do not provide empirical data comparing the total token consumption of a multi-agent system (which must pass messages between agents) versus a single agent with a long context window.\n*   **Failure Modes:** While \"fault tolerance\" is claimed as a benefit of multi-agent systems, the notes do not address the specific failure modes of *coordination* (e.g., agent hallucination in hand-offs or circular dependencies), which are unique risks to multi-agent setups.\n\n### 4. Overall Assessment\nThe choice between single and multi-agent workflows is primarily a trade-off between **architectural complexity** and **task decomposition requirements.**\n\n*   **Prefer Multi-Agent when:** The task is inherently parallelizable, requires diverse domain expertise, or is too large to fit within a single agent’s effective context window. It is the superior choice for high-stakes, complex research environments where modularity and fault tolerance are critical.\n*   **Prefer Single-Agent when:** The task is sequential, requires strict state consistency (e.g., coding/debugging), or when the development team is in the early stages of a project. A single-agent baseline is recommended to establish a performance floor before introducing the overhead of multi-agent orchestration.\n\n**Strategic Recommendation:** Organizations should adopt a \"Single-Agent First\" strategy. Only transition to a multi-agent architecture when the single-agent baseline fails to manage context effectively or when the task complexity necessitates distinct, parallelized sub-processes.",
+      "metadata": {}
+    },
+    {
+      "agent": "writer",
+      "content": "### Choosing Between Single-Agent and Multi-Agent Research Workflows\n\nIn modern AI engineering, the choice between a single-agent and a multi-agent architecture is a fundamental design decision that balances system complexity against task requirements. While multi-agent systems offer significant performance gains for complex, large-scale research, they introduce substantial orchestration overhead.\n\n#### When to Prefer a Multi-Agent Workflow\nMulti-agent systems are designed to handle high-complexity tasks that benefit from modularity and parallelization. You should consider a multi-agent architecture when:\n\n*   **Task Decomposition is Required:** When a research goal can be broken into independent sub-tasks (e.g., one agent searches for data, another synthesizes it, and a third verifies it), multi-agent systems allow for **breadth-first exploration**. This avoids the bottlenecks of sequential processing [1, 2].\n*   **Parallel Processing is Necessary:** Multi-agent systems can execute tasks simultaneously. By distributing work across agents with separate context windows, you can achieve higher throughput and more efficient reasoning than a single agent constrained by a linear workflow [4].\n*   **Domain-Specific Expertise is Needed:** If a project requires deep knowledge in disparate fields, it is often more efficient to deploy specialized agents (e.g., a \"Coder\" agent and a \"Legal\" agent) rather than forcing a single model to maintain broad, shallow expertise [3].\n*   **Fault Tolerance is Critical:** In a multi-agent setup, the failure of one component does not necessarily crash the entire system. This modularity allows for more robust, graceful degradation in production environments [3].\n\n#### When to Prefer a Single-Agent Workflow\nDespite the hype surrounding multi-agent systems, a single-agent baseline is often the most effective starting point. You should prefer a single-agent workflow when:\n\n*   **State Management is Primary:** For tasks requiring strict, sequential state consistency—such as complex code refactoring or debugging—a single agent is superior. It avoids the \"coordination tax\" and potential communication errors that arise when multiple agents must synchronize their state [1].\n*   **Simplicity and Debugging are Priorities:** Single-agent systems are significantly easier to build, monitor, and debug. They provide a clear, predictable performance baseline, which is essential for establishing a \"floor\" before introducing the complexity of multi-agent orchestration [4].\n*   **Tasks are Homogeneous:** Recent research suggests that for many tasks, a single high-capability model can effectively simulate multiple roles through multi-turn prompting. This approach can achieve similar accuracy to multi-agent systems while reducing inference costs and eliminating the need for complex inter-agent communication protocols [5].\n\n#### Summary of Trade-offs\n\n| Feature | Single-Agent | Multi-Agent |\n| :--- | :--- | :--- |\n| **Complexity** | Low; easy to debug | High; requires orchestration |\n| **State Management** | Superior; linear | Complex; requires synchronization |\n| **Scalability** | Limited by context window | High; parallelizable |\n| **Best For** | Sequential, state-heavy tasks | Complex, parallel research |\n\n#### Strategic Recommendation: The \"Single-Agent First\" Approach\nFor most technical teams, the most effective strategy is to **start with a single-agent baseline.** \n\n1.  **Establish a Baseline:** Build a robust single-agent system to solve your core problem.\n2.  **Identify Bottlenecks:** Only transition to a multi-agent architecture if you encounter specific limitations, such as \"token bloat\" (where the context window is overwhelmed by diverse tasks) or if the task complexity demonstrably exceeds the reasoning capabilities of a single model [4].\n3.  **Evaluate Overhead:** Before scaling, consider that multi-agent systems require additional infrastructure for governance, audit trails, and inter-agent communication, which may introduce latency and operational costs that outweigh the performance benefits for simpler workflows [3].\n\n***\n\n**Sources:**\n1. [Single-Agent vs Multi-Agent AI: When to Scale Your Dev Workflow](https://www.augmentcode.com/guides/single-agent-vs-multi-agent-ai)\n2. [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)\n3. [Single-agent vs. multi-agent systems: Enterprise AI tradeoffs](https://www.dataiku.com/blog/single-agent-vs-multi-agent-systems)\n4. [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture)\n5. [Rethinking the Value of Multi-Agent Workflow: A Strong Single Agent Baseline](https://arxiv.org/html/2601.12307v1)",
+      "metadata": {}
+    }
+  ],
+  "trace": [
+    {
+      "name": "supervisor",
+      "timestamp": "2026-08-20T10:45:46.661561+00:00",
+      "payload": {
+        "action": "researcher",
+        "iteration": 1
+      }
+    },
+    {
+      "name": "node_timing",
+      "timestamp": "2026-08-20T10:45:46.662606+00:00",
+      "payload": {
+        "agent": "supervisor",
+        "duration_seconds": 0.0005591999506577849
+      }
+    },
+    {
+      "name": "researcher",
+      "timestamp": "2026-08-20T10:45:58.358430+00:00",
+      "payload": {
+        "sources_found": 5,
+        "notes_length": 3270,
+        "input_tokens": 1363,
+        "output_tokens": 647,
+        "cost_usd": 0.00131125
+      }
+    },
+    {
+      "name": "node_timing",
+      "timestamp": "2026-08-20T10:45:58.359942+00:00",
+      "payload": {
+        "agent": "researcher",
+        "duration_seconds": 11.694434000004549
+      }
+    },
+    {
+      "name": "supervisor",
+      "timestamp": "2026-08-20T10:45:58.360954+00:00",
+      "payload": {
+        "action": "analyst",
+        "iteration": 2
+      }
+    },
+    {
+      "name": "node_timing",
+      "timestamp": "2026-08-20T10:45:58.361954+00:00",
+      "payload": {
+        "agent": "supervisor",
+        "duration_seconds": 0.0004301000153645873
+      }
+    },
+    {
+      "name": "analyst",
+      "timestamp": "2026-08-20T10:46:02.367047+00:00",
+      "payload": {
+        "analysis_length": 3583,
+        "input_tokens": 721,
+        "output_tokens": 729,
+        "cost_usd": 0.0012737500000000001
+      }
+    },
+    {
+      "name": "node_timing",
+      "timestamp": "2026-08-20T10:46:02.367047+00:00",
+      "payload": {
+        "agent": "analyst",
+        "duration_seconds": 4.0045672000269406
+      }
+    },
+    {
+      "name": "supervisor",
+      "timestamp": "2026-08-20T10:46:02.368045+00:00",
+      "payload": {
+        "action": "writer",
+        "iteration": 3
+      }
+    },
+    {
+      "name": "node_timing",
+      "timestamp": "2026-08-20T10:46:02.369008+00:00",
+      "payload": {
+        "agent": "supervisor",
+        "duration_seconds": 0.000367900007404387
+      }
+    },
+    {
+      "name": "writer",
+      "timestamp": "2026-08-20T10:46:07.172568+00:00",
+      "payload": {
+        "answer_length": 4761,
+        "input_tokens": 1646,
+        "output_tokens": 1022,
+        "cost_usd": 0.0019444999999999998
+      }
+    },
+    {
+      "name": "node_timing",
+      "timestamp": "2026-08-20T10:46:07.172568+00:00",
+      "payload": {
+        "agent": "writer",
+        "duration_seconds": 4.802611499966588
+      }
+    },
+    {
+      "name": "supervisor",
+      "timestamp": "2026-08-20T10:46:07.173869+00:00",
+      "payload": {
+        "action": "done",
+        "reason": "final_answer_ready"
+      }
+    },
+    {
+      "name": "node_timing",
+      "timestamp": "2026-08-20T10:46:07.174448+00:00",
+      "payload": {
+        "agent": "supervisor",
+        "duration_seconds": 0.00035689998185262084
+      }
+    }
+  ],
+  "trace_url": "https://jp.cloud.langfuse.com/project/cmt1bkvne004uad0hlsr0m2y6/traces/286d9c8c4336e81cfceb2938d428df15",
+  "errors": []
+}
